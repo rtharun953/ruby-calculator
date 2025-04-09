@@ -1,0 +1,36 @@
+name: Ruby CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'  # Specify the Ruby version you want to use
+
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    - name: Run tests
+      run: |
+        ruby -Ilib:test test/*.rb   # If you have tests
+
+    - name: Deploy (optional)
+      run: |
+        echo "Deploying to your server or cloud..."
+        # Add deployment steps here (e.g., Docker, AWS, etc.)
